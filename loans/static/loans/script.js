@@ -87,21 +87,7 @@ async function checkEligibility() {
 }
 
 // ===== APPLY STEPS =====
-let curStep = 1;
-function nextStep(from) {
-    document.getElementById('form-step-' + from).classList.remove('active');
-    document.getElementById('step-tab-' + from).classList.remove('active');
-    curStep = from + 1;
-    document.getElementById('form-step-' + curStep).classList.add('active');
-    document.getElementById('step-tab-' + curStep).classList.add('active');
-}
-function prevStep(from) {
-    document.getElementById('form-step-' + from).classList.remove('active');
-    document.getElementById('step-tab-' + from).classList.remove('active');
-    curStep = from - 1;
-    document.getElementById('form-step-' + curStep).classList.add('active');
-    document.getElementById('step-tab-' + curStep).classList.add('active');
-}
+
 async function submitApp() {
     if (!document.getElementById('consent-check').checked) { showToast('Please accept the terms to continue'); return; }
     
@@ -112,15 +98,15 @@ async function submitApp() {
         dob: document.getElementById('app-dob')?.value,
         pan_number: document.getElementById('app-pan')?.value,
         loan_type: document.getElementById('app-loan-type')?.value,
-        employment_type: document.querySelector('#form-step-2 select')?.value,
-        company_name: document.querySelector('#form-step-2 input[placeholder="ABC Pvt. Ltd."]')?.value,
-        designation: document.querySelector('#form-step-2 input[placeholder="Software Engineer"]')?.value,
-        work_experience: document.querySelector('#form-step-2 input[placeholder="3"]')?.value,
-        office_address: document.querySelector('#form-step-2 input[placeholder="Mumbai, Maharashtra"]')?.value,
-        monthly_income: document.querySelector('#form-step-3 input[placeholder="50000"]')?.value,
-        loan_amount_required: document.querySelector('#form-step-3 input[placeholder="500000"]')?.value,
-        loan_tenure_months: document.querySelector('#form-step-3 input[placeholder="36"]')?.value,
-        existing_emi: document.querySelector('#form-step-3 input[placeholder="0"]')?.value
+        employment_type: document.getElementById('app-emp-type')?.value,
+        company_name: document.getElementById('app-company')?.value,
+        designation: document.getElementById('app-designation')?.value,
+        work_experience: document.getElementById('app-work-exp')?.value,
+        office_address: document.getElementById('app-office-addr')?.value,
+        monthly_income: document.getElementById('app-income')?.value,
+        loan_amount_required: document.getElementById('app-loan-amt')?.value,
+        loan_tenure_months: document.getElementById('app-loan-tenure')?.value,
+        existing_emi: document.getElementById('app-emi')?.value
     };
 
     try {
