@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+db.sqlite3
+/loan_project/__pycache__/
+/loans/__pycache__/
+/loans/migrations/__pycache__/
