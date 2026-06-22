@@ -8,6 +8,18 @@ from django.conf import settings
 from .models import LoanApplication
 from datetime import datetime
 
+def safe_float(val, default=0.0):
+    try:
+        return float(val)
+    except (ValueError, TypeError):
+        return default
+
+def safe_int(val, default=0):
+    try:
+        return int(val)
+    except (ValueError, TypeError):
+        return default
+
 def index_view(request):
     return render(request, 'loans/index.html')
 
@@ -16,10 +28,10 @@ def check_eligibility(request):
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
-            age = int(data.get('age', 0))
-            income = float(data.get('income', 0))
-            existing_emi = float(data.get('existing_emi', 0))
-            cibil = int(data.get('cibil', 0))
+            age = safe_int(data.get('age'))
+            income = safe_float(data.get('income'))
+            existing_emi = safe_float(data.get('existing_emi'))
+            cibil = safe_int(data.get('cibil'))
 
             if age == 0 or income == 0 or cibil == 0:
                 return JsonResponse({'status': 'error', 'message': 'Please fill all fields'}, status=400)
@@ -49,7 +61,10 @@ def apply_loan(request):
                 dob = datetime.strptime(dob_str, '%Y-%m-%d').date()
 
             work_exp = data.get('work_experience')
-            work_exp = int(work_exp) if work_exp else None
+            try:
+                work_exp = int(work_exp)
+            except (ValueError, TypeError):
+                work_exp = None
 
             LoanApplication.objects.create(
                 full_name=data.get('full_name', ''),
@@ -63,10 +78,10 @@ def apply_loan(request):
                 designation=data.get('designation', ''),
                 work_experience=work_exp,
                 office_address=data.get('office_address', ''),
-                monthly_income=float(data.get('monthly_income', 0)),
-                loan_amount_required=float(data.get('loan_amount_required', 0)),
-                loan_tenure_months=int(data.get('loan_tenure_months', 0)),
-                existing_emi=float(data.get('existing_emi', 0))
+                monthly_income=safe_float(data.get('monthly_income')),
+                loan_amount_required=safe_float(data.get('loan_amount_required')),
+                loan_tenure_months=safe_int(data.get('loan_tenure_months')),
+                existing_emi=safe_float(data.get('existing_emi'))
             )
 
             # Send Email to Admins
