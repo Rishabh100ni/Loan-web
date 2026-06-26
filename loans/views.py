@@ -85,7 +85,7 @@ def apply_loan(request):
             )
 
             # Send Email to Admins
-            admin_emails = ['rishabh@example.com', 'anish@example.com'] # Placeholder emails
+            admin_emails = ['rishabhsoni10011@gmail.com'] # Placeholder emails
             admin_subject = f"New Loan Application: {data.get('full_name', 'Applicant')}"
             admin_message = f"""A new loan application has been submitted.
 
