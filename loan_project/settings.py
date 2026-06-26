@@ -77,12 +77,23 @@ WSGI_APPLICATION = 'loan_project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
+import dj_database_url
+import os
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'loan_db',
+        'USER': 'loan_user',
+        'PASSWORD': 'your_password',
+        'HOST': '127.0.0.1', # Agar cloud par hai to cloud ka host URL daalein
+        'PORT': '5432',
     }
 }
+
+# Real-world deployment (Vercel/Render) ke liye DATABASE_URL environment variable use karein
+if os.environ.get('DATABASE_URL'):
+    DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
 
 # Override with POSTGRES URL if available in environment (for Vercel)
 database_url = os.environ.get("DATABASE_URL")
